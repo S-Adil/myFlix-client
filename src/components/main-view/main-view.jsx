@@ -5,6 +5,7 @@ import React from 'react';
 //you can now import components into other files
 //class keyoword states that component is a class component(as opposed to function component)
 //extend keyword for extending from React.Component, create MainView comp using generic React.Comp template as a foundation
+import axios from 'axios';
 
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
@@ -23,16 +24,23 @@ export class MainView extends React.Component {
     //super(); initializes your component’s state, and without it, you’ll get an error if you try to use this.state inside constructor(). Can omit if you don't use this.state
     super();
     this.state = {
-      movies: [
-        {
-          _id: 1, Title: 'Inception', Description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.(Summary courtesy of IMDb)', ImagePath: "..."
-        },
-        { _id: 2, Title: 'The Shawshank Redemption', Description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.(Summary courtesy of IMDb)', ImagePath: '...' },
-        { _id: 3, Title: 'Gladiatior', Description: 'A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.(Summary courtesy of IMDb)', ImagePath: '...' }
-      ],
+      movies: [],
       selectedMovie: null
     }
   }
+
+  componentDidMount() {
+    axios.get('https://sana-movie-app.herokuapp.com/movies').then(response => {
+      this.setState({
+        movies: response.data
+      });
+    })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+
 
   setSelectedMovie(newSelectedMovie) {
     this.setState({
@@ -45,14 +53,14 @@ export class MainView extends React.Component {
 
 
     if (movies.length === 0)
-      return <div className="main-view">The list is empty!</div>;
+      return <div className="main-view" />;
 
     return ( //written with ternary operator for if else in JS, thats what the ? and : are for
       <div className="main-view">
         {selectedMovie
           ? <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
           : movies.map(movie => (
-            <MovieCard key={movie._id} movieData={movie} onMovieClick={(movie) => { this.setSelectedMovie(movie) }} />
+            <MovieCard key={movie._id} movieData={movie} onMovieClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie) }} />
           ))
         }
       </div>

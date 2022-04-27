@@ -3,6 +3,7 @@
     "@parcel/transformer-sass": "^2.5.0"
   },
   "dependencies": {
+    "axios": "^0.27.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   }

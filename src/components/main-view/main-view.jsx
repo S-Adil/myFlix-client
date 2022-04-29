@@ -11,6 +11,7 @@ import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
 export class MainView extends React.Component {
+
   // render function returns visual representation of the component (what will be displayed on the screen)
   // the inside looks like HTML but it's JSX
   //render fcn can only have one root element
@@ -29,7 +30,11 @@ export class MainView extends React.Component {
     }
   }
 
+
   componentDidMount() {
+
+    // code executed right after the component is added to the DOM.
+
     axios.get('https://sana-movie-app.herokuapp.com/movies').then(response => {
       this.setState({
         movies: response.data
@@ -38,8 +43,16 @@ export class MainView extends React.Component {
       .catch(error => {
         console.log(error);
       });
+
   }
 
+  componentDidUpdate() {
+    // code executed right after component's state or props are changed.
+  }
+
+  componentWillUnmount() {
+    // code executed just before the moment the component gets removed from the DOM.
+  }
 
 
   setSelectedMovie(newSelectedMovie) {
@@ -66,4 +79,5 @@ export class MainView extends React.Component {
       </div>
     );
   }
+
 }

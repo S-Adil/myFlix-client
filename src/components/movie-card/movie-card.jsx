@@ -20,7 +20,7 @@ MovieCard.PropTypes = {
 
   3)The props object must contain onMovieClick and it must be a function */
 
-  movie: PropTypes.shape({
+  movieData: PropTypes.shape({
     Title: PropTypes.string.isRequired,
     Description: PropTypes.string.isRequired,
     ImageURL: PropTypes.string.isRequired,

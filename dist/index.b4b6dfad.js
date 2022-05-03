@@ -26143,7 +26143,7 @@ MovieView.PropTypes = {
             Name: _propTypesDefault.default.string.isRequired
         })
     }).isRequired,
-    onMovieClick: _propTypesDefault.default.func.isRequired
+    onBackClick: _propTypesDefault.default.func.isRequired
 };
 
   $parcel$ReactRefreshHelpers$e9f6.postlude(module);
@@ -30636,6 +30636,10 @@ function LoginView(props) {
 }
 _s(LoginView, "wuQOK7xaXdVz4RMrZQhWbI751Oc=");
 _c = LoginView;
+LoginView.PropTypes = {
+    username: _propTypesDefault.default.string.isRequired,
+    password: _propTypesDefault.default.string.isRequired
+};
 var _c;
 $RefreshReg$(_c, "LoginView");
 

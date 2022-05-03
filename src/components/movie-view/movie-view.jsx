@@ -44,5 +44,5 @@ MovieView.PropTypes = {
       Name: PropTypes.string.isRequired,
     })
   }).isRequired,
-  onMovieClick: PropTypes.func.isRequired
+  onBackClick: PropTypes.func.isRequired
 };

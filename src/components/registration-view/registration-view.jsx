@@ -80,3 +80,12 @@ export function RegistrationView(props) {
     </Form>
   );
 }
+
+RegistrationView.PropTypes = {
+
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  birthday: PropTypes.string.isRequired
+
+};

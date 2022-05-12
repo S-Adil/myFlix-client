@@ -19,7 +19,7 @@ export function LoginView(props) {
 
   };
   return (
-    <Container className='Container'>
+    <Container fluid className='Container'>
       <Row className='LoginHeader' variant='text-light'>
         <Col>
           <h3>Welcome to myFlix</h3>

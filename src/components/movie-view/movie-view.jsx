@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+//importing UI design styling for component
+import './movie-view.scss';
+
 export class MovieView extends React.Component {
   render() {
     //is this supposed to be movieData?

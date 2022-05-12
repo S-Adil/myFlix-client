@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Container, Form, Button, Card, CardGroup } from 'react-bootstrap';
 
 //importing UI design styling for component
@@ -34,50 +35,57 @@ export function RegistrationView(props) {
   };
 
   return (
-    <Form>
-      <Form.Group>
-        <Form.label>Username:</Form.label>
-        <Form.Control
-          type="text"
-          value={username}
-          onChange={e => setUsername(e.target.value)} required
-          placeholder='Enter a username'
-        />
-      </Form.Group>
+    <Container>
+      <Row>
+        <Col>
+          <Form>
+            <Form.Group>
+              <Form.label>Username:</Form.label>
+              <Form.Control
+                type="text"
+                value={username}
+                onChange={e => setUsername(e.target.value)} required
+                placeholder='Enter a username'
+              />
+            </Form.Group>
 
-      <Form.Group>
-        <Form.label>Password:</Form.label>
-        <Form.Control
-          type="text"
-          value={password}
-          onChange={e => setPassword(e.target.value)} required
-          placeholder='Enter a password'
-          minLength="8"
-        />
-      </Form.Group>
+            <Form.Group>
+              <Form.label>Password:</Form.label>
+              <Form.Control
+                type="text"
+                value={password}
+                onChange={e => setPassword(e.target.value)} required
+                placeholder='Enter a password'
+                minLength="8"
+              />
+            </Form.Group>
 
-      <Form.Group>
-        <Form.label>Email:</Form.label>
-        <Form.Control
-          type="text"
-          value={email}
-          onChange={e => setEmail(e.target.value)} required
-          placeholder='Enter an email'
-        />
-      </Form.Group>
+            <Form.Group>
+              <Form.label>Email:</Form.label>
+              <Form.Control
+                type="text"
+                value={email}
+                onChange={e => setEmail(e.target.value)} required
+                placeholder='Enter an email'
+              />
+            </Form.Group>
 
-      <Form.Group>
-        <Form.label>Birthday:</Form.label>
-        <Form.Control
-          type="text"
-          value={birthday}
-          onChange={e => setBirthday(e.target.value)} required
-          placeholder='Enter your birthday'
-        />
-      </Form.Group>
+            <Form.Group>
+              <Form.label>Birthday:</Form.label>
+              <Form.Control
+                type="text"
+                value={birthday}
+                onChange={e => setBirthday(e.target.value)} required
+                placeholder='Enter your birthday'
+              />
+            </Form.Group>
 
-      <Button variant="primary" type="submit" onClick={handleSubmit}>Register</Button>
-    </Form>
+            <Button variant="primary" type="submit" onClick={handleSubmit}>Register</Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+
   );
 }
 

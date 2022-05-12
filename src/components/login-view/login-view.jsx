@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Form, Button, Card } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 //importing UI design styling for component
 import './login-view.scss';
 
@@ -18,25 +19,44 @@ export function LoginView(props) {
 
   };
   return (
-    <Form>
-      <Form.Group controlId="formUsername">
-        <Form.Label>Username:</Form.Label>
-        <Form.Control type="text" onChange={e => setUsername(e.target.value)} />
-      </Form.Group>
+    <Container className='Container'>
+      <Row className='LoginHeader' variant='text-light'>
+        <Col>
+          <h3>Welcome to myFlix</h3>
+        </Col>
+      </Row>
+      <Row className='justify-content-md-center'>
+        <Col></Col>
+        <Col>
+          <Card className="text-center" bg='dark' text='light'>
+            <Card.Body>
+              <Card.Title>Log in to your account</Card.Title>
+              <Form>
+                <Form.Group controlId="formUsername">
+                  <Form.Label>Username:</Form.Label>
+                  <Form.Control type="text" onChange={e => setUsername(e.target.value)} />
+                </Form.Group>
 
-      <Form.Group controlId="formPassword">
-        <Form.Label>Password:</Form.Label>
-        <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
-      </Form.Group>
-      <Button variant="primary" type="submit" onClick={handleSubmit}>
-        Submit
-      </Button>
-    </Form>//This is a React-Bootstrap button
+                <Form.Group controlId="formPassword">
+                  <Form.Label>Password:</Form.Label>
+                  <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
+                </Form.Group>
+                <Button variant="primary" type="submit" onClick={handleSubmit}>
+                  Submit
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col></Col>
+      </Row>
+    </Container>
+
   );
 }
 
-// LoginView.PropTypes = {
+LoginView.PropTypes = {
 
-//   username: PropTypes.string.isRequired,
-//   password: PropTypes.string.isRequired
-// }
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Card } from 'react-bootstrap';
+import { Container, Form, Button, Card } from 'react-bootstrap';
 //importing UI design styling for component
 import './login-view.scss';
 

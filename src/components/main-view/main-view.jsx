@@ -13,9 +13,7 @@ import { MovieView } from '../movie-view/movie-view';
 import { RegistrationView } from '../movie-view/movie-view';
 
 //React-bootstrap imports
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Container, Row, Col } from 'react-bootstrap';
 
 //importing UI design styling for component
 import './main-view.scss';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Container, Form, Button, Card, CardGroup } from 'react-bootstrap';
 
 //importing UI design styling for component
 import './registration-view.scss';

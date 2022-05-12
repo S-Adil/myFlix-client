@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, Card } from 'react-bootstrap';
 
 //importing UI design styling for component
 import './movie-view.scss';

@@ -4,6 +4,7 @@
 
 .LoginHeader {
   text-align: center;
+  color: #fff;
   padding-top: 10%;
   padding-bottom: 20px;
 }
@@ -12,6 +13,11 @@
 
 .my-flix {
   color: #4682b4;
+}
+
+.app-container {
+  background-color: #000;
+  text-decoration-color: #f0f8ff;
 }
 
 /*# sourceMappingURL=index.e3f97e84.css.map */

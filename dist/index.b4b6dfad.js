@@ -32874,7 +32874,6 @@ function LoginView(props) {
         children: [
             /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactBootstrap.Row, {
                 className: "LoginHeader",
-                variant: "text-light",
                 children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV(_reactBootstrap.Col, {
                     children: /*#__PURE__*/ _jsxDevRuntime.jsxDEV("h3", {
                         children: "Welcome to myFlix"

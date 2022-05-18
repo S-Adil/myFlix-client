@@ -5,12 +5,20 @@ import React from 'react';
 //you can now import components into other files
 //class keyoword states that component is a class component(as opposed to function component)
 //extend keyword for extending from React.Component, create MainView comp using generic React.Comp template as a foundation
+
 import axios from 'axios';
+
+// BrowserRouter component is used to implement state-based routing.
+import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom';
 
 import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
-import { RegistrationView } from '../movie-view/movie-view';
+import { RegistrationView } from '../registration-view/registration-view';
+import { DirectorView } from '../director-view/director-view';
+import { GenreView } from '../genre-view/genre-view';
+import { ProfileView } from '../profile-view/profile-view';
+import { NavigationBar } from '../navbar/navbar';
 
 //React-bootstrap imports
 import { Container, Row, Col } from 'react-bootstrap';
@@ -24,6 +32,7 @@ export class MainView extends React.Component {
   constructor() {
     //super(); initializes your component’s state, and without it, you’ll get an error if you try to use this.state inside constructor(). Can omit if you don't use this.state
     super();
+
     // Initial state is set to null
     this.state = {
       movies: [],
@@ -33,19 +42,16 @@ export class MainView extends React.Component {
   }
 
 
+
   componentDidMount() {
-
     // code executed right after the component is added to the DOM.
-
-    axios.get('https://sana-movie-app.herokuapp.com/movies').then(response => {
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
       this.setState({
-        movies: response.data
+        user: localStorage.getItem('user')
       });
-    })
-      .catch(error => {
-        console.log(error);
-      });
-
+      this.getMovies(accessToken);
+    }
   }
 
   componentDidUpdate() {
@@ -56,55 +62,144 @@ export class MainView extends React.Component {
     // code executed just before the moment the component gets removed from the DOM.
   }
 
-  /*When a movie is clicked, this function is invoked and updates the state of the `selectedMovie` *property to that movie*/
-  setSelectedMovie(newSelectedMovie) {
+
+  onLoggedIn(authData) {
+    console.log(authData);
+
     this.setState({
-      selectedMovie: newSelectedMovie
+      user: authData.user.Username,
+    });
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.Username);
+    this.getMovies(authData.token);
+  }
+
+  onLoggedOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.setState({
+      user: null
     });
   }
 
-  /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
-  onLoggedIn(user) {
-    this.setState({
-      user
-    });
+
+  getMovies(token) {
+    axios.get('https://sana-movie-app.herokuapp.com/movies', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        // Assign the result to the state
+        this.setState({
+          movies: response.data
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   render() {
-    const { movies, selectedMovie, user } = this.state;
+    const { movies, user } = this.state;
 
-    /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView */
-    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
 
-    // Before the movies have been loaded
-    if (movies.length === 0)
-      return <Container />;
 
     return (
       <Container>
+        {/* <NavigationBar user={user} /> */}
+        {/* <button onClick={() => { this.onLoggedOut() }}>Logout</button> */}
         <Row className="main-view justify-content-md-center">
-          {/* If the state of 'selectedMovie' is not null, that selected movie will be returned otherwise, all "movies will be returned */}
-          {selectedMovie
-            //written with ternary operator for if else in JS, thats what the ? and : are for
-
-            ? (
-              <Col md={8}>
-                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
+          <Router>
+            <Route exact path="/" render={() => {
+              /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView */
+              if (!user) return <Col>
+                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
               </Col>
-            )
-            : (
-              movies.map(movie => (
-                <Col md={3}>
-                  <MovieCard key={movie._id} movieData={movie} onMovieClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie); }} />
+
+              // Before the movies have been loaded
+              if (movies.length === 0) return <div className="main-view" />;
+
+              return movies.map(m => (
+                <Col md={3} key={m._id}>
+                  <MovieCard movie={m} />
                 </Col>
               ))
-            )
-          }
+            }} />
+
+            <Route path="/register" render={() => {
+              if (user) return <Redirect to="/" />
+              return <Col lg={8} md={8}>
+                <RegistrationView />
+              </Col>
+            }} />
+
+            <Route path="/movies/:movieId" render={({ match, history }) => {
+
+              if (!user) return <Col>
+                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              </Col>
+
+              if (movies.length === 0) return <div className="main-view" />;
+
+              return <Col md={8}>
+                <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+              </Col>
+            }} />
+
+            <Route path="/directors/:name" render={({ match, history }) => {
+
+              if (!user) return <Col>
+                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              </Col>
+
+              if (movies.length === 0) return <div className="main-view" />;
+
+              return <Col md={8}>
+                <DirectorView movie={movies.find(m => m.Director.Name === match.params.name).Director} onBackClick={() => history.goBack()} />
+              </Col>
+            }} />
+
+            <Route path="/genres/:name" render={({ match, history }) => {
+
+              if (!user) return <Col>
+                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              </Col>
+
+              if (movies.length === 0) return <div className="main-view" />;
+
+              return <Col md={8}>
+                <GenreView genre={movies.find(m => m.Genre.Name === match.params.name).Genre} onBackClick={() => history.goBack()} />
+              </Col>
+            }} />
+            {/* route for link on main-view to profile-view */}
+
+
+            <Route path={`/users/${user}`} render={({ history, match }) => {
+              if (!user) return <LoginView
+                onLoggedIn={user => this.onLoggedIn(user)} />
+              if (movies.length === 0) return <div className="main-view" />
+              return
+              <ProfileView history={history} movies={movies} user={user === match.params.username} />
+            }} />
+
+
+            <Route path={`/user-update/${user}`}
+              render={({ match, history }) => {
+                if (!user) return <Redirect to="/" />
+                return <Col>
+                  <UserUpdate user={user}
+                    onBackClick={() => history.goBack()} />
+                </Col>
+              }} />
+          </Router>
         </Row>
-        )
       </Container>
+
+
     );
   }
 }
+
+
 
 

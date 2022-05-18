@@ -63,6 +63,7 @@ export function RegistrationView(props) {
       })
         .then(response => {
           const data = response.data;
+          console.log(data);
           props.onLoggedIn(data);
           window.open('/', '_self');
           // The second argument '_self' is necessary so that

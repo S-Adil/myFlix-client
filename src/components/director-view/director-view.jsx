@@ -13,7 +13,6 @@ export function DirectorView(props) {
   return (
     <Container>
       <Card bg='dark' text='light'>
-        <Card.Img variant="top" src={director.ImagePath} />
         <Card.Body>
           <Card.Title>{director.Name}</Card.Title>
           <Card.Text>{director.Bio}</Card.Text>

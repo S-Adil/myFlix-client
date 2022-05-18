@@ -105,15 +105,16 @@ export class MainView extends React.Component {
 
 
     return (
-      <Container>
-        {/* <NavigationBar user={user} /> */}
-        {/* <button onClick={() => { this.onLoggedOut() }}>Logout</button> */}
-        <Row className="main-view justify-content-md-center">
-          <Router>
+      <Router>
+        <NavigationBar user={user} />
+        <Container>
+          {/* <button onClick={() => { this.onLoggedOut() }}>Logout</button> */}
+          <Row className="main-view justify-content-md-center">
+
             <Route exact path="/" render={() => {
               /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView */
               if (!user) return <Col>
-                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+                <LoginView movies={movies} onLoggedIn={user => this.onLoggedIn(user)} />;
               </Col>
 
               // Before the movies have been loaded
@@ -191,9 +192,9 @@ export class MainView extends React.Component {
                     onBackClick={() => history.goBack()} />
                 </Col>
               }} />
-          </Router>
-        </Row>
-      </Container>
+          </Row>
+        </Container>
+      </Router>
 
 
     );

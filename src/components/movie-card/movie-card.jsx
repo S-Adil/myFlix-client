@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Container } from 'react-bootstrap';
+import { Link } from "react-router-dom";
+
 //importing UI design styling for component
 import './movie-card.scss';
 
@@ -40,6 +42,5 @@ MovieCard.PropTypes = {
     Genre: PropTypes.shape({
       Name: PropTypes.string.isRequired,
     }).isRequired
-  }).isRequired,
-  onMovieClick: PropTypes.func.isRequired
+  }).isRequired
 };

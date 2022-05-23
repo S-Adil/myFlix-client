@@ -3,10 +3,12 @@ import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
 
 export function NavigationBar({ user }) {
+
   const onLoggedOut = () => {
     localStorage.clear();
     window.open("/", "_self");
   }
+
   const userAuth = () => {
     if (typeof window == "undefined") {
       return false;
@@ -17,6 +19,7 @@ export function NavigationBar({ user }) {
       return false;
     }
   };
+
   return (
     <Navbar className="main-nav" sticky="top" bg="dark" expand="lg" variant="dark">
       <Container>
@@ -28,7 +31,7 @@ export function NavigationBar({ user }) {
               <Nav.Link href={`/users/${user}`}>{user}</Nav.Link>
             )}
             {userAuth() && (
-              <Button variant="link" onClick={() => { this.onLoggedOut() }}>Logout</Button>
+              <Button variant="link" onClick={() => { onLoggedOut() }}>Logout</Button>
             )}
             {!userAuth() && (
               <Nav.Link href="/"> Sign In</Nav.Link>

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Container } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 //importing UI design styling for component
 import './movie-view.scss';
@@ -11,19 +12,30 @@ export class MovieView extends React.Component {
     const { movie, onBackClick } = this.props;
 
     return (
-      <Container>
+      <Container fluid>
         <Card bg='dark' text='light'>
           <Card.Img variant="top" src={movie.ImagePath} />
           <Card.Body>
             <Card.Title>{movie.Title}</Card.Title>
-            <Card.Text>{movie.Description}</Card.Text>
-            <Link to={`/directors/${movie.Director.Name}`}>
-              <Button variant="link">Director</Button>
-            </Link>
 
-            <Link to={`/genres/${movie.Genre.Name}`}>
-              <Button variant="link">Genre</Button>
-            </Link>
+            <Card.Text>
+
+              <p>{movie.Description}</p>
+
+              <p>
+                Director: <Link to={`/directors/${movie.Director.Name}`}>
+                  <Button variant="link">{movie.Director.Name}</Button>
+                </Link>
+              </p>
+
+              <p>
+                Genre: <Link to={`/genres/${movie.Genre.Name}`}>
+                  <Button variant="link">{movie.Genre.Name}</Button>
+                </Link>
+              </p>
+
+            </Card.Text>
+
           </Card.Body>
         </Card>
       </Container>

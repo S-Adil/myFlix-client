@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Form, Button, Card, CardGroup } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, CardGroup } from 'react-bootstrap';
+import { Link } from "react-router-dom";
+import axios from 'axios';
 
 //importing UI design styling for component
 import './registration-view.scss';
-import axios from 'axios';
+
+
 
 export function RegistrationView(props) {
+  // Declare hook for each input
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
   // call useState() with empty string b/c this is the initial value of your login variable
 
-  // Declare hook for each input
+
   const [usernameErr, setUsernameErr] = useState('');
   const [passwordErr, setPasswordErr] = useState('');
   const [emailErr, setEmailErr] = useState('');
@@ -39,14 +43,14 @@ export function RegistrationView(props) {
     if (!email) {
       setEmailErr('Email is required');
       isReq = false;
-    } else if (indexOf('@') === -1) {
+    } else if (email.indexOf('@') === -1) {
       setEmailErr('Please enter a valid email');
       isReq = false;
     }
     if (!birthday) {
       setBirthdayErr('Birthday is required');
       isReq = false;
-    }//else if(){}
+    }
 
     return isReq;
   }
@@ -55,7 +59,7 @@ export function RegistrationView(props) {
     e.preventDefault();
     const isReq = validate();
     if (isReq) {
-      axios.post('https://sana-movie-app.herokuapp.com/registration', {
+      axios.post('https://sana-movie-app.herokuapp.com/users', {
         Username: username,
         Password: password,
         Email: email,
@@ -64,14 +68,14 @@ export function RegistrationView(props) {
         .then(response => {
           const data = response.data;
           console.log(data);
-          props.onLoggedIn(data);
+          alert('Registration successful, you can log in now :) ')
           window.open('/', '_self');
           // The second argument '_self' is necessary so that
           // the page will open in the current tab
         })
-        .catch(e => {
-          console.log('error registering the user');
-          alert('Something wasn\'t entered right');
+        .catch(response => {
+          console.error(response);
+          alert('Unable to register');
         });
     }
   };
@@ -79,10 +83,12 @@ export function RegistrationView(props) {
   return (
     <Container>
       <Row>
-        <Col>
+        <Col md={8}>
           <Form>
-            <Form.Group>
-              <Form.label>Username:</Form.label>
+            <h3>Sign Up</h3>
+            <p></p>
+            <Form.Group controlId='formUsername' className='reg-form-inputs'>
+              <Form.Label>Username:</Form.Label>
               <Form.Control
                 type="text"
                 value={username}
@@ -93,8 +99,8 @@ export function RegistrationView(props) {
               {usernameErr && <p>{usernameErr}</p>}
             </Form.Group>
 
-            <Form.Group>
-              <Form.label>Password:</Form.label>
+            <Form.Group controlId='formPassword' className='reg-form-inputs'>
+              <Form.Label>Password:</Form.Label>
               <Form.Control
                 type="text"
                 value={password}
@@ -106,8 +112,8 @@ export function RegistrationView(props) {
               {passwordErr && <p>{passwordErr}</p>}
             </Form.Group>
 
-            <Form.Group>
-              <Form.label>Email:</Form.label>
+            <Form.Group controlId='formEmail' className='reg-form-inputs'>
+              <Form.Label>Email:</Form.Label>
               <Form.Control
                 type="text"
                 value={email}
@@ -118,8 +124,8 @@ export function RegistrationView(props) {
               {emailErr && <p>{emailErr}</p>}
             </Form.Group>
 
-            <Form.Group>
-              <Form.label>Birthday:</Form.label>
+            <Form.Group controlId='formBirthday' className='reg-form-inputs'>
+              <Form.Label>Birthday:</Form.Label>
               <Form.Control
                 type="text"
                 value={birthday}
@@ -131,11 +137,12 @@ export function RegistrationView(props) {
             </Form.Group>
 
             <Button variant="primary" type="submit" onClick={handleSubmit}>Register</Button>
+            <p></p>
+            <p>Already registered?  <Link to={'/'}>Sign In</Link> here</p>
           </Form>
         </Col>
       </Row>
     </Container>
-
   );
 }
 

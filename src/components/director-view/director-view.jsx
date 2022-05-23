@@ -1,30 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Container } from 'react-bootstrap';
-import { MovieCard } from '../movie-card/movie-card';
+import { Link } from "react-router-dom";
 
 //importing UI design styling for component
 import './director-view.scss';
 
-export function DirectorView(props) {
+export class DirectorView extends React.Component {
+  render() {
+    //is this supposed to be movieData?
+    const { director, onBackClick } = this.props;
 
-  const { director, onBackClick } = this.props;
+    return (
+      <Container>
+        <Card bg='dark' text='light'>
+          <Card.Body>
+            <Card.Title>{director.Name}</Card.Title>
 
-  return (
-    <Container>
-      <Card bg='dark' text='light'>
-        <Card.Body>
-          <Card.Title>{director.Name}</Card.Title>
-          <Card.Text>{director.Bio}</Card.Text>
-          <Card.Text>{director.Birth}</Card.Text>
-          <Card.Text>{director.Death}</Card.Text>
-        </Card.Body>
-        <Button onClick={() => onBackClick(null)} variant="link">Back</Button>
-      </Card>
-    </Container>
-  );
+            <Card.Text>
+
+              <p>Bio: {director.Bio}</p>
+              <p>Birth Year: {director.Birth}</p>
+              <p>Year of Death: {director.Death}</p>
+
+            </Card.Text>
+
+          </Card.Body>
+        </Card>
+      </Container>
+    );
+  }
 }
-
 DirectorView.PropTypes = {
   /*
   1)The props object must include a director object (shape({...}) means that it’s an object).
@@ -41,3 +47,4 @@ DirectorView.PropTypes = {
   }).isRequired,
   onBackClick: PropTypes.func.isRequired
 }
+

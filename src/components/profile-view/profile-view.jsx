@@ -12,8 +12,9 @@ import './profile-view.scss';
 export function ProfileView(props) {
 
   // Declare hook for each input, initialize to empty state
-  const [user, setUser] = useState({});
-  const [favouriteMoviesList, setFavouriteMovieList] = useState({});
+  const [userData, setUserData] = useState({});
+  const [updatedUser, setUpdatedUser] = useState({});
+  const [favouriteMoviesList, setFavouriteMovieList] = useState([]);
   // const [username, setUsername] = useState('');
   // const [password, setPassword] = useState('');
   // const [email, setEmail] = useState('');
@@ -23,17 +24,20 @@ export function ProfileView(props) {
   const token = localStorage.getItem('token');
 
   const getUserData = () => {
+
     axios.get(`https://sana-movie-app.herokuapp.com/users/${username}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         // Assign the result to the state
-        setUser(response.data);
-        setFavouriteMovieList(response.data)
+        setUserData(response.data);
+        //Get list of user's favourite movies
+        setFavouriteMovieList(props.movies.filter((m) => response.data.FavouriteMovies.includes(m._id)));
       })
       .catch(function (error) {
         console.log(error);
       });
+
   }
 
 
@@ -45,8 +49,7 @@ export function ProfileView(props) {
     getUserData(token, username);
   }, []);
 
-  //Get list of user's favourite movies
-  //  const favMovies = props.movies.filter((m) => user.FavouriteMovies.includes(m._id));
+
 
 
   // function to update user info
@@ -54,19 +57,41 @@ export function ProfileView(props) {
     const username = localStorage.getItem('user');
     e.preventDefault();
     /* Send a request to the server for authentication */
-    axios.put(`https://sana-movie-app.herokuapp.com/${username}`, {
-      Username: user.Username,
-      Password: user.Password,
-      Email: user.Email,
-      Birthday: user.Birthday
-    })
+    axios.put(`https://sana-movie-app.herokuapp.com/users/${username}`,
+      {
+        Username: userData.Username,
+        Password: userData.Password,
+        Email: userData.Email,
+        Birthday: userData.Birthday
+      })
       .then(response => {
-        setUser(response.data)
+        setUserData(response.data)
+        localStorage.setItem("user", response.data.Username)
       })
       .catch(e => {
         console.log('Could not update user info')
       });
   }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios.post('https://sana-movie-app.herokuapp.com/users/${username}', {
+      Username: userData.Username,
+      Password: userData.Password,
+      Email: userData.Email,
+      Birthday: userData.Birthday
+    })
+      .then(response => {
+        setUserData(response.data);
+        alert('Profile has been updated :) ')
+        window.open('/', '_self');
+        // The second argument '_self' is necessary so that
+        // the page will open in the current tab
+      })
+      .catch(response => {
+        console.error(response);
+        alert('Could not update');
+      });
+  };
 
   const removeFavMovie = (props) => {
 
@@ -78,7 +103,7 @@ export function ProfileView(props) {
     })
       .then(response => {
         console.log(response);
-        setUser(response.data);
+        setUserData(response.data);
         alert("Movie has been deleted from favourites!");
         window.open(`/movies/${props.movies._id}`, "_self");
       })
@@ -101,7 +126,7 @@ export function ProfileView(props) {
       window.open('/', "_self");
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      setUser(null);
+      setUserData(null);
     })
       .catch(function (error) {
         console.log(error);
@@ -111,7 +136,7 @@ export function ProfileView(props) {
   const onLoggedOut = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    setUser(null);
+    setUserData(null);
   }
 
   return (
@@ -129,29 +154,89 @@ export function ProfileView(props) {
               <Form>
 
                 <Form.Group controlId="profileUsername">
-                  <Form.Label className='profileUsernameLabel'>Username: {user.Username} </Form.Label>
+                  <Form.Label className='profileUsernameLabel'>Username: {userData.Username} </Form.Label>
                 </Form.Group>
 
                 <Form.Group controlId="profileEmail">
-                  <Form.Label>Email: {user.Email} </Form.Label>
+                  <Form.Label>Email: {userData.Email} </Form.Label>
                 </Form.Group>
 
                 <Form.Group controlId="profileBirthday">
-                  <Form.Label>Birthday: {user.Birthday} </Form.Label>
+                  <Form.Label>Birthday: {userData.Birthday} </Form.Label>
                 </Form.Group>
 
                 <Card className="text-center" bg='dark' text='light'>
                   <Card.Title>Favourite Movies:</Card.Title>
                   <Card.Body>
-                    {user.FavouriteMovies}
+                    {favouriteMoviesList.map((m) => {
+                      return (
+                        <div key={m._id}>
+                          <img src={m.ImagePath} />
+                          <Link to={`/movies/${m._id}`}>
+                            <h4>{m.Title}</h4>
+                          </Link>
+                          <Button variant="dark" onClick={() => removeFavMovie(m._id)}>Remove from list</Button>
+                        </div>
+                      )
+                    })
+                    }
                   </Card.Body>
                 </Card>
               </Form>
 
             </Card.Body>
           </Card>
+          <Form className='profile-form-update' onSubmit={(e) => handleSubmit(e)}>
+            <h2>Want to change some of your information?</h2>
+            <Form.Group controlId='formUsername' className='upd-form-inputs'>
+              <Form.Label>Username:</Form.Label>
+              <Form.Control
+                type="text"
+                value={userData.Username}
+                onChange={e => setUserData(e.target.value)}
+                placeholder='Enter a username'
+              />
+            </Form.Group>
+
+            <Form.Group controlId='formPassword' className='upd-form-inputs'>
+              <Form.Label>Password:</Form.Label>
+              <Form.Control
+                type="text"
+                value={userData.Password}
+                onChange={e => setUserData(e.target.value)}
+                placeholder='Enter a password'
+                minLength="8"
+              />
+            </Form.Group>
+
+            <Form.Group controlId='formEmail' className='upd-form-inputs'>
+              <Form.Label>Email:</Form.Label>
+              <Form.Control
+                type="text"
+                value={userData.Email}
+                onChange={e => setUserData(e.target.value)}
+                placeholder='Enter an email'
+              />
+            </Form.Group>
+
+            <Form.Group controlId='formBirthday' className='upd-form-inputs'>
+              <Form.Label>Birthday:</Form.Label>
+              <Form.Control
+                type="text"
+                value={userData.Birthday}
+                onChange={e => setUserData(e.target.value)}
+                placeholder='Enter your birthday'
+              />
+            </Form.Group>
+
+            <Button variant="primary" type="submit" onClick={handleUpdate}>Update</Button>
+            <p></p>
+
+
+          </Form>
         </Col>
         <Col></Col>
+
         {/* Enter edit button for username here -> link to update user page */}
       </Row>
     </Container>

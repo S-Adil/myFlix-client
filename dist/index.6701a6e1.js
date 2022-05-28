@@ -44477,6 +44477,18 @@ class MovieView extends _reactDefault.default.Component {
                                 children: "Add movies to Favourites"
                             })
                         ]
+                    }),
+                    /*#__PURE__*/ _jsxRuntime.jsx(_reactBootstrap.Button, {
+                        variant: "dark",
+                        onClick: ()=>{
+                            onBackClick();
+                        },
+                        __source: {
+                            fileName: "src/components/movie-view/movie-view.jsx",
+                            lineNumber: 72
+                        },
+                        __self: this,
+                        children: "Back"
                     })
                 ]
             })

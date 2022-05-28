@@ -2,14 +2,46 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Card, Container } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import axios from 'axios';
 
 //importing UI design styling for component
 import './movie-view.scss';
 
 export class MovieView extends React.Component {
+
+  constructor() {
+    //super(); initializes your component’s state, and without it, you’ll get an error if you try to use this.state inside constructor(). Can omit if you don't use this.state
+    super();
+
+    // Initial state is set to null
+    this.state = {
+      movies: [],
+      user: null
+    };
+  }
+
+  addMovie(movie, user) {
+    const username = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+
+    axios.post(`https://sana-movie-app.herokuapp.com/users/${username}/movies/${movie._id}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+        // Assign the result to the state
+        this.setState({
+          user: response.data
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   render() {
     //is this supposed to be movieData?
-    const { movie, onBackClick } = this.props;
+    const { movie, user, onClick, onBackClick } = this.props;
+
 
     return (
       <Container fluid>
@@ -35,7 +67,7 @@ export class MovieView extends React.Component {
               </p>
 
             </Card.Text>
-
+            <Button variant="dark" onClick={() => { this.addMovie(movie, user) }}>Add movies to Favourites</Button>
           </Card.Body>
         </Card>
       </Container>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Card, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { MovieCard } from '../movie-card/movie-card';
@@ -15,22 +15,19 @@ export function ProfileView(props) {
   const [userData, setUserData] = useState({});
   const [updatedUser, setUpdatedUser] = useState({});
   const [favouriteMoviesList, setFavouriteMovieList] = useState([]);
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [birthday, setBirthday] = useState('');
-  // const [favouriteMoviesList, setFavouriteMovieList] = useState('');
+
 
   const token = localStorage.getItem('token');
 
   const getUserData = () => {
-
-    axios.get(`https://sana-movie-app.herokuapp.com/users/${username}`, {
+    const username = localStorage.getItem('user');
+    axios.get(`https://sana-movie-app.herokuapp.com/users/${props.user}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         // Assign the result to the state
         setUserData(response.data);
+        setUpdatedUser(response.data);
         //Get list of user's favourite movies
         setFavouriteMovieList(props.movies.filter((m) => response.data.FavouriteMovies.includes(m._id)));
       })
@@ -43,55 +40,41 @@ export function ProfileView(props) {
 
   // used to replace componentDidMount and other lifecycle methods
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token !== null)
-      username = localStorage.getItem('user')
-    getUserData(token, username);
+    let source = axios.CancelToken.source();
+
+    if (token !== null) {
+      getUserData(source.token, props.user);
+    }
+    return () => {
+      source.cancel();
+    }
   }, []);
 
 
 
 
   // function to update user info
-  const handleUpdate = (e) => {
-    const username = localStorage.getItem('user');
+  const handleSubmit = (e) => {
     e.preventDefault();
     /* Send a request to the server for authentication */
-    axios.put(`https://sana-movie-app.herokuapp.com/users/${username}`,
-      {
-        Username: userData.Username,
-        Password: userData.Password,
-        Email: userData.Email,
-        Birthday: userData.Birthday
-      })
+    const username = localStorage.getItem('user');
+    axios.put(`https://sana-movie-app.herokuapp.com/users/${username}`, updatedUser,
+      { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
         setUserData(response.data)
+        alert('Profile has been updated');
         localStorage.setItem("user", response.data.Username)
       })
       .catch(e => {
         console.log('Could not update user info')
       });
   }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post('https://sana-movie-app.herokuapp.com/users/${username}', {
-      Username: userData.Username,
-      Password: userData.Password,
-      Email: userData.Email,
-      Birthday: userData.Birthday
-    })
-      .then(response => {
-        setUserData(response.data);
-        alert('Profile has been updated :) ')
-        window.open('/', '_self');
-        // The second argument '_self' is necessary so that
-        // the page will open in the current tab
-      })
-      .catch(response => {
-        console.error(response);
-        alert('Could not update');
-      });
-  };
+  const handleUpdate = (e) => {
+    setUpdatedUser({
+      ...updatedUser,
+      [e.target.name]: e.target.value
+    });
+  }
 
   const removeFavMovie = (props) => {
 
@@ -103,9 +86,8 @@ export function ProfileView(props) {
     })
       .then(response => {
         console.log(response);
-        setUserData(response.data);
-        alert("Movie has been deleted from favourites!");
-        window.open(`/movies/${props.movies._id}`, "_self");
+        // Change state of favouriteMovieList so that it shows updated movie list
+        setFavouriteMovieList(favouriteMoviesList.filter(m => m._id != props.movies._id));
       })
       .catch(function (error) {
         console.log(error);
@@ -118,17 +100,17 @@ export function ProfileView(props) {
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('user');
 
-    axios.delete(`https://sana-movie-app.herokuapp.com/users/${username}/`, {
+    axios.delete(`https://sana-movie-app.herokuapp.com/users/${username}`, {
       headers: { Authorization: `Bearer ${token}` }
     }).then(response => {
       console.log(response);
       alert("User has been deregistered");
-      window.open('/', "_self");
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      setUserData(null);
+      window.open('/', "_self");
+
     })
-      .catch(function (error) {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -136,7 +118,6 @@ export function ProfileView(props) {
   const onLoggedOut = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    setUserData(null);
   }
 
   return (
@@ -183,7 +164,7 @@ export function ProfileView(props) {
                   </Card.Body>
                 </Card>
               </Form>
-
+              <Nav.Link href="/">Back to Movies</Nav.Link>
             </Card.Body>
           </Card>
           <Form className='profile-form-update' onSubmit={(e) => handleSubmit(e)}>
@@ -191,9 +172,10 @@ export function ProfileView(props) {
             <Form.Group controlId='formUsername' className='upd-form-inputs'>
               <Form.Label>Username:</Form.Label>
               <Form.Control
-                type="text"
-                value={userData.Username}
-                onChange={e => setUserData(e.target.value)}
+                type='text'
+                name='Username'
+                defaultValue={userData.Username}
+                onChange={e => handleUpdate(e)}
                 placeholder='Enter a username'
               />
             </Form.Group>
@@ -201,9 +183,10 @@ export function ProfileView(props) {
             <Form.Group controlId='formPassword' className='upd-form-inputs'>
               <Form.Label>Password:</Form.Label>
               <Form.Control
-                type="text"
-                value={userData.Password}
-                onChange={e => setUserData(e.target.value)}
+                type='text'
+                name='Password'
+                defaultValue={userData.Password}
+                onChange={e => handleUpdate(e)}
                 placeholder='Enter a password'
                 minLength="8"
               />
@@ -212,9 +195,10 @@ export function ProfileView(props) {
             <Form.Group controlId='formEmail' className='upd-form-inputs'>
               <Form.Label>Email:</Form.Label>
               <Form.Control
-                type="text"
-                value={userData.Email}
-                onChange={e => setUserData(e.target.value)}
+                type='text'
+                name='Email'
+                defaultValue={userData.Email}
+                onChange={e => handleUpdate(e)}
                 placeholder='Enter an email'
               />
             </Form.Group>
@@ -222,18 +206,26 @@ export function ProfileView(props) {
             <Form.Group controlId='formBirthday' className='upd-form-inputs'>
               <Form.Label>Birthday:</Form.Label>
               <Form.Control
-                type="text"
-                value={userData.Birthday}
-                onChange={e => setUserData(e.target.value)}
+                type='text'
+                name='Birthday'
+                defaultValue={userData.Birthday}
+                onChange={e => handleUpdate(e.target.value)}
                 placeholder='Enter your birthday'
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" onClick={handleUpdate}>Update</Button>
+            <Button variant="primary" type="submit" onClick={handleSubmit}>Update</Button>
             <p></p>
 
 
           </Form>
+
+          {/* Button to delete user */}
+          <div>
+            <Button variant="danger" type="submit" onClick={deregisterUser}>
+              Delete Profile
+            </Button>
+          </div>
         </Col>
         <Col></Col>
 

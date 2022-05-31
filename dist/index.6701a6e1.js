@@ -45156,10 +45156,10 @@ function ProfileView(props) {
     const validate = ()=>{
         let isReq = true;
         if (!userData.Username) {
-            setUserDataErr('Username Required');
+            setUserDataErr.Username('Username Required');
             isReq = false;
         } else if (userData.Username.length < 2) {
-            setUsernameErr('Username must be at least 2 characters long');
+            setUsernameErr.Username('Username must be at least 2 characters long');
             isReq = false;
         }
         if (!userData.Password) {
@@ -45515,13 +45515,13 @@ function ProfileView(props) {
                                                 },
                                                 __self: this
                                             }),
-                                            setUserDataErr && /*#__PURE__*/ _jsxRuntime.jsx("p", {
+                                            setUserDataErr.Username && /*#__PURE__*/ _jsxRuntime.jsx("p", {
                                                 __source: {
                                                     fileName: "src/components/profile-view/profile-view.jsx",
                                                     lineNumber: 223
                                                 },
                                                 __self: this,
-                                                children: setUserDataErr
+                                                children: setUserDataErr.Username
                                             })
                                         ]
                                     }),
@@ -45556,13 +45556,13 @@ function ProfileView(props) {
                                                 },
                                                 __self: this
                                             }),
-                                            setUserDataErr && /*#__PURE__*/ _jsxRuntime.jsx("p", {
+                                            setUserDataErr.Password && /*#__PURE__*/ _jsxRuntime.jsx("p", {
                                                 __source: {
                                                     fileName: "src/components/profile-view/profile-view.jsx",
                                                     lineNumber: 236
                                                 },
                                                 __self: this,
-                                                children: setUserDataErr
+                                                children: setUserDataErr.Password
                                             })
                                         ]
                                     }),
@@ -45596,13 +45596,13 @@ function ProfileView(props) {
                                                 },
                                                 __self: this
                                             }),
-                                            setUserDataErr && /*#__PURE__*/ _jsxRuntime.jsx("p", {
+                                            setUserDataErr.Email && /*#__PURE__*/ _jsxRuntime.jsx("p", {
                                                 __source: {
                                                     fileName: "src/components/profile-view/profile-view.jsx",
                                                     lineNumber: 249
                                                 },
                                                 __self: this,
-                                                children: setUserDataErr
+                                                children: setUserDataErr.Email
                                             })
                                         ]
                                     }),
@@ -45636,13 +45636,13 @@ function ProfileView(props) {
                                                 },
                                                 __self: this
                                             }),
-                                            setUserDataErr && /*#__PURE__*/ _jsxRuntime.jsx("p", {
+                                            setUserDataErr.Birthday && /*#__PURE__*/ _jsxRuntime.jsx("p", {
                                                 __source: {
                                                     fileName: "src/components/profile-view/profile-view.jsx",
                                                     lineNumber: 262
                                                 },
                                                 __self: this,
-                                                children: setUserDataErr
+                                                children: setUserDataErr.Birthday
                                             })
                                         ]
                                     }),

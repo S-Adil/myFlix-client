@@ -55,10 +55,10 @@ export function ProfileView(props) {
   const validate = () => {
     let isReq = true;
     if (!userData.Username) {
-      setUserDataErr('Username Required');
+      setUserDataErr.Username('Username Required');
       isReq = false;
     } else if (userData.Username.length < 2) {
-      setUsernameErr('Username must be at least 2 characters long');
+      setUsernameErr.Username('Username must be at least 2 characters long');
       isReq = false;
     }
     if (!userData.Password) {
@@ -220,7 +220,7 @@ export function ProfileView(props) {
                 placeholder='Enter a username'
               />
               {/* code added here to display validation error */}
-              {setUserDataErr && <p>{setUserDataErr}</p>}
+              {setUserDataErr.Username && <p>{setUserDataErr.Username}</p>}
             </Form.Group>
 
             <Form.Group controlId='formPassword' className='upd-form-inputs'>
@@ -233,7 +233,7 @@ export function ProfileView(props) {
                 minLength="8"
               />
               {/* code added here to display validation error */}
-              {setUserDataErr && <p>{setUserDataErr}</p>}
+              {setUserDataErr.Password && <p>{setUserDataErr.Password}</p>}
             </Form.Group>
 
             <Form.Group controlId='formEmail' className='upd-form-inputs'>
@@ -246,7 +246,7 @@ export function ProfileView(props) {
                 placeholder='Enter an email'
               />
               {/* code added here to display validation error */}
-              {setUserDataErr && <p>{setUserDataErr}</p>}
+              {setUserDataErr.Email && <p>{setUserDataErr.Email}</p>}
             </Form.Group>
 
             <Form.Group controlId='formBirthday' className='upd-form-inputs'>
@@ -259,7 +259,7 @@ export function ProfileView(props) {
                 placeholder='Enter your birthday'
               />
               {/* code added here to display validation error */}
-              {setUserDataErr && <p>{setUserDataErr}</p>}
+              {setUserDataErr.Birthday && <p>{setUserDataErr.Birthday}</p>}
             </Form.Group>
 
             <Button variant="primary" type="submit" onClick={handleSubmit}>Update</Button>

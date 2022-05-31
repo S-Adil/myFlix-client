@@ -45880,7 +45880,7 @@ function UserUpdate() {
                             },
                             __self: this,
                             children: /*#__PURE__*/ _jsxRuntime.jsx(_reactRouterDom.Link, {
-                                to: '/users/{userToken}',
+                                to: `/users/${userToken}`,
                                 __source: {
                                     fileName: "src/components/profile-view/user-update.jsx",
                                     lineNumber: 146

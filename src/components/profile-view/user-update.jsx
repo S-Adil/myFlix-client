@@ -143,7 +143,7 @@ export function UserUpdate() {
 
             <Button variant="primary" type="submit" onClick={handleSubmit}>Update</Button>
             <p></p>
-            <p><Link to={'/users/{userToken}'}>Back to Profile</Link></p>
+            <p><Link to={`/users/${userToken}`}>Back to Profile</Link></p>
           </Form>
         </Col>
       </Row>

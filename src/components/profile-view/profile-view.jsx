@@ -15,7 +15,6 @@ export function ProfileView(props) {
   // Declare hook for each input, initialize to empty state
   const [userData, setUserData] = useState({});
   const [updatedUser, setUpdatedUser] = useState({});
-  const [userDataErr, setUserDataErr] = useState({});
   const [favouriteMoviesList, setFavouriteMovieList] = useState([]);
 
 
@@ -52,72 +51,6 @@ export function ProfileView(props) {
     }
   }, []);
 
-  //validate user inputs
-  const validate = () => {
-    let isReq = true;
-    if (!userData.Username) {
-      setUserDataErr.Username('Username Required');
-      isReq = false;
-    } else if (userData.Username.length < 2) {
-      setUsernameErr.Username('Username must be at least 2 characters long');
-      isReq = false;
-    }
-    if (!userData.Password) {
-      setUserDataErr('Password Required');
-      isReq = false;
-    } else if (userData.Password.length < 6) {
-      setUserData('Password must be at least 6 characters long');
-      isReq = false;
-    }
-    if (!userData.Email) {
-      setUserDataErr('Email is required');
-      isReq = false;
-    } else if (userData.Email.indexOf('@') === -1) {
-      setUserDataErr('Please enter a valid email');
-      isReq = false;
-    }
-    if (!userData.Birthday) {
-      setUserDataErr('Birthday is required');
-      isReq = false;
-    }
-
-    return isReq;
-  }
-
-
-
-  // function to update user info
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const isReq = validate();
-    if (isReq) {
-      /* Send a request to the server for authentication */
-      const username = localStorage.getItem('user');
-      axios.put(`https://sana-movie-app.herokuapp.com/users/${username}`, updatedUser,
-        { headers: { Authorization: `Bearer ${token}` } })
-        .then(response => {
-          setUserData(response.data);
-          alert('Profile has been updated');
-          localStorage.setItem("user", response.data.Username)
-          window.open(`/users/${response.data.Username}`, '_self');
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log('Could not update user info')
-        });
-    }
-  }
-
-
-
-  const handleUpdate = (e) => {
-    console.log('I got called');
-    console.log(e.target.name, e.target.value);
-    setUpdatedUser({
-      ...updatedUser,
-      [e.target.name]: e.target.value
-    });
-  }
 
   const removeFavMovie = (props) => {
 
@@ -130,6 +63,7 @@ export function ProfileView(props) {
         console.log(response);
         // Change state of favouriteMovieList so that it shows updated movie list
         setFavouriteMovieList(favouriteMoviesList.filter(m => m._id != props.movies._id));
+        window.open(`/users/${username}`, '_self');
       })
       .catch(function (error) {
         console.log(error);

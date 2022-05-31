@@ -14,6 +14,7 @@ export function ProfileView(props) {
   // Declare hook for each input, initialize to empty state
   const [userData, setUserData] = useState({});
   const [updatedUser, setUpdatedUser] = useState({});
+  const [userDataErr, setUserDataErr] = useState({});
   const [favouriteMoviesList, setFavouriteMovieList] = useState([]);
 
 
@@ -50,26 +51,64 @@ export function ProfileView(props) {
     }
   }, []);
 
+  //validate user inputs
+  const validate = () => {
+    let isReq = true;
+    if (!userData.Username) {
+      setUserDataErr('Username Required');
+      isReq = false;
+    } else if (userData.Username.length < 2) {
+      setUsernameErr('Username must be at least 2 characters long');
+      isReq = false;
+    }
+    if (!userData.Password) {
+      setUserDataErr('Password Required');
+      isReq = false;
+    } else if (userData.Password.length < 6) {
+      setUserData('Password must be at least 6 characters long');
+      isReq = false;
+    }
+    if (!userData.Email) {
+      setUserDataErr('Email is required');
+      isReq = false;
+    } else if (userData.Email.indexOf('@') === -1) {
+      setUserDataErr('Please enter a valid email');
+      isReq = false;
+    }
+    if (!userData.Birthday) {
+      setUserDataErr('Birthday is required');
+      isReq = false;
+    }
+
+    return isReq;
+  }
 
 
 
   // function to update user info
   const handleSubmit = (e) => {
     e.preventDefault();
-    /* Send a request to the server for authentication */
-    const username = localStorage.getItem('user');
-    axios.put(`https://sana-movie-app.herokuapp.com/users/${username}`, updatedUser,
-      { headers: { Authorization: `Bearer ${token}` } })
-      .then(response => {
-        setUserData(response.data);
-        setUpdatedUser(updatedUser)
-        alert('Profile has been updated');
-        localStorage.setItem("user", response.data.Username)
-      })
-      .catch(e => {
-        console.log('Could not update user info')
-      });
+    const isReq = validate();
+    if (isReq) {
+      /* Send a request to the server for authentication */
+      const username = localStorage.getItem('user');
+      axios.put(`https://sana-movie-app.herokuapp.com/users/${username}`, updatedUser,
+        { headers: { Authorization: `Bearer ${token}` } })
+        .then(response => {
+          setUserData(response.data);
+          alert('Profile has been updated');
+          localStorage.setItem("user", response.data.Username)
+          window.open(`/users/${response.data.Username}`, '_self');
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log('Could not update user info')
+        });
+    }
   }
+
+
+
   const handleUpdate = (e) => {
     console.log('I got called');
     console.log(e.target.name, e.target.value);
@@ -177,21 +216,25 @@ export function ProfileView(props) {
                 type='text'
                 name='Username'
                 defaultValue={userData.Username}
-                onChange={e => handleUpdate(e)}
+                onChange={e => handleUpdate(e)} required
                 placeholder='Enter a username'
               />
+              {/* code added here to display validation error */}
+              {setUserDataErr && <p>{setUserDataErr}</p>}
             </Form.Group>
 
-            {/* <Form.Group controlId='formPassword' className='upd-form-inputs'>
+            <Form.Group controlId='formPassword' className='upd-form-inputs'>
               <Form.Label>Password:</Form.Label>
               <Form.Control
                 type='text'
                 name='Password'
-                onChange={e => handleUpdate(e)}
+                onChange={e => handleUpdate(e)} required
                 placeholder='Enter a password'
                 minLength="8"
               />
-            </Form.Group> */}
+              {/* code added here to display validation error */}
+              {setUserDataErr && <p>{setUserDataErr}</p>}
+            </Form.Group>
 
             <Form.Group controlId='formEmail' className='upd-form-inputs'>
               <Form.Label>Email:</Form.Label>
@@ -202,6 +245,8 @@ export function ProfileView(props) {
                 onChange={e => handleUpdate(e)}
                 placeholder='Enter an email'
               />
+              {/* code added here to display validation error */}
+              {setUserDataErr && <p>{setUserDataErr}</p>}
             </Form.Group>
 
             <Form.Group controlId='formBirthday' className='upd-form-inputs'>
@@ -213,6 +258,8 @@ export function ProfileView(props) {
                 onChange={e => handleUpdate(e)}
                 placeholder='Enter your birthday'
               />
+              {/* code added here to display validation error */}
+              {setUserDataErr && <p>{setUserDataErr}</p>}
             </Form.Group>
 
             <Button variant="primary" type="submit" onClick={handleSubmit}>Update</Button>

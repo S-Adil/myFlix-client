@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col, Form, Button, Card, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 import { MovieCard } from '../movie-card/movie-card';
+import { UserUpdate } from './user-update';
 
 //importing UI design styling for component
 import './profile-view.scss';
@@ -186,6 +187,19 @@ export function ProfileView(props) {
                 <Form.Group controlId="profileBirthday">
                   <Form.Label>Birthday: {userData.Birthday} </Form.Label>
                 </Form.Group>
+                <Link to={`/users/user-update/${userData.Username}`}>
+                  <style type="text/css">
+                    {`
+                      .btn-round {
+                        background-color: purple;
+                        color: white;
+                        text-align: center;
+                        border-radius: 12px
+                      }
+                      `}
+                  </style>
+                  <Button variant="round" >Update Profile</Button>
+                </Link>
 
                 <Card className="text-center" bg='dark' text='light'>
                   <Card.Title>Favourite Movies:</Card.Title>
@@ -208,78 +222,24 @@ export function ProfileView(props) {
               <Nav.Link href="/">Back to Movies</Nav.Link>
             </Card.Body>
           </Card>
-          <Form className='profile-form-update' onSubmit={(e) => handleSubmit(e)}>
-            <h2>Want to change some of your information?</h2>
-            <Form.Group controlId='formUsername' className='upd-form-inputs'>
-              <Form.Label>Username:</Form.Label>
-              <Form.Control
-                type='text'
-                name='Username'
-                defaultValue={userData.Username}
-                onChange={e => handleUpdate(e)} required
-                placeholder='Enter a username'
-              />
-              {/* code added here to display validation error */}
-              {setUserDataErr.Username && <p>{setUserDataErr.Username}</p>}
-            </Form.Group>
 
-            <Form.Group controlId='formPassword' className='upd-form-inputs'>
-              <Form.Label>Password:</Form.Label>
-              <Form.Control
-                type='text'
-                name='Password'
-                onChange={e => handleUpdate(e)} required
-                placeholder='Enter a password'
-                minLength="8"
-              />
-              {/* code added here to display validation error */}
-              {setUserDataErr.Password && <p>{setUserDataErr.Password}</p>}
-            </Form.Group>
-
-            <Form.Group controlId='formEmail' className='upd-form-inputs'>
-              <Form.Label>Email:</Form.Label>
-              <Form.Control
-                type='text'
-                name='Email'
-                defaultValue={userData.Email}
-                onChange={e => handleUpdate(e)}
-                placeholder='Enter an email'
-              />
-              {/* code added here to display validation error */}
-              {setUserDataErr.Email && <p>{setUserDataErr.Email}</p>}
-            </Form.Group>
-
-            <Form.Group controlId='formBirthday' className='upd-form-inputs'>
-              <Form.Label>Birthday:</Form.Label>
-              <Form.Control
-                type='text'
-                name='Birthday'
-                defaultValue={userData.Birthday}
-                onChange={e => handleUpdate(e)}
-                placeholder='Enter your birthday'
-              />
-              {/* code added here to display validation error */}
-              {setUserDataErr.Birthday && <p>{setUserDataErr.Birthday}</p>}
-            </Form.Group>
-
-            <Button variant="primary" type="submit" onClick={handleSubmit}>Update</Button>
-            <p></p>
-
-
-          </Form>
 
           {/* Button to delete user */}
-          <div>
-            <Button variant="danger" type="submit" onClick={deregisterUser}>
-              Delete Profile
-            </Button>
-          </div>
+          <Row>
+            <Col></Col>
+            <Col>
+              <Button variant="danger" type="submit" onClick={deregisterUser}>
+                Delete Profile
+              </Button>
+            </Col>
+            <Col></Col>
+          </Row>
         </Col>
         <Col></Col>
 
         {/* Enter edit button for username here -> link to update user page */}
       </Row>
-    </Container>
+    </Container >
   );
 }
 

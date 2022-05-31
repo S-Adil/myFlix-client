@@ -18,13 +18,16 @@ import { RegistrationView } from '../registration-view/registration-view';
 import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 import { ProfileView } from '../profile-view/profile-view';
+import { UserUpdate } from '../profile-view/user-update';
 import { NavigationBar } from '../navbar/navbar';
+
 
 //React-bootstrap imports
 import { Container, Row, Col } from 'react-bootstrap';
 
 //importing UI design styling for component
 import './main-view.scss';
+
 
 
 export class MainView extends React.Component {
@@ -171,12 +174,11 @@ export class MainView extends React.Component {
             }
             } />
 
-            <Route path={`/user-update/${user}`}
+            <Route path={`/users/user-update/${user}`}
               render={({ match, history }) => {
                 if (!user) return <Redirect to="/" />
                 return <Col>
-                  <UserUpdate user={user}
-                    onBackClick={() => history.goBack()} />
+                  <UserUpdate />
                 </Col>
               }} />
 

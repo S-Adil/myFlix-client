@@ -23,10 +23,11 @@ export class MovieView extends React.Component {
   addMovie(movie, user) {
     const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
+    console.log(movie);
+    console.log(token);
 
-    axios.post(`https://sana-movie-app.herokuapp.com/users/${username}/movies/${movie._id}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    axios.post(`https://sana-movie-app.herokuapp.com/users/${username}/movies/${movie._id}`, {},
+      { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
         // Assign the result to the state
         this.setState({
@@ -39,7 +40,6 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    //is this supposed to be movieData?
     const { movie, user, onClick, onBackClick } = this.props;
 
 

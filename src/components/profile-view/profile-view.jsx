@@ -61,7 +61,8 @@ export function ProfileView(props) {
     axios.put(`https://sana-movie-app.herokuapp.com/users/${username}`, updatedUser,
       { headers: { Authorization: `Bearer ${token}` } })
       .then(response => {
-        setUserData(response.data)
+        setUserData(response.data);
+        setUpdatedUser(updatedUser)
         alert('Profile has been updated');
         localStorage.setItem("user", response.data.Username)
       })
@@ -70,6 +71,8 @@ export function ProfileView(props) {
       });
   }
   const handleUpdate = (e) => {
+    console.log('I got called');
+    console.log(e.target.name, e.target.value);
     setUpdatedUser({
       ...updatedUser,
       [e.target.name]: e.target.value
@@ -80,8 +83,7 @@ export function ProfileView(props) {
 
     const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-
-    axios.delete(`https://sana-movie-app.herokuapp.com/users/${username}/movies/${props.movies._id}`, {
+    axios.delete(`https://sana-movie-app.herokuapp.com/users/${username}/movies/${props}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
@@ -180,17 +182,16 @@ export function ProfileView(props) {
               />
             </Form.Group>
 
-            <Form.Group controlId='formPassword' className='upd-form-inputs'>
+            {/* <Form.Group controlId='formPassword' className='upd-form-inputs'>
               <Form.Label>Password:</Form.Label>
               <Form.Control
                 type='text'
                 name='Password'
-                defaultValue={userData.Password}
                 onChange={e => handleUpdate(e)}
                 placeholder='Enter a password'
                 minLength="8"
               />
-            </Form.Group>
+            </Form.Group> */}
 
             <Form.Group controlId='formEmail' className='upd-form-inputs'>
               <Form.Label>Email:</Form.Label>
@@ -209,7 +210,7 @@ export function ProfileView(props) {
                 type='text'
                 name='Birthday'
                 defaultValue={userData.Birthday}
-                onChange={e => handleUpdate(e.target.value)}
+                onChange={e => handleUpdate(e)}
                 placeholder='Enter your birthday'
               />
             </Form.Group>

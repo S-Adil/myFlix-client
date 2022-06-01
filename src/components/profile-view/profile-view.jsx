@@ -52,18 +52,17 @@ export function ProfileView(props) {
   }, []);
 
 
-  const removeFavMovie = (props) => {
+  const removeFavMovie = (id) => {
 
     const username = localStorage.getItem('user');
     const token = localStorage.getItem('token');
-    axios.delete(`https://sana-movie-app.herokuapp.com/users/${username}/movies/${props}`, {
+    axios.delete(`https://sana-movie-app.herokuapp.com/users/${username}/movies/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         console.log(response);
         // Change state of favouriteMovieList so that it shows updated movie list
-        setFavouriteMovieList(favouriteMoviesList.filter(m => m._id != props.movies._id));
-        window.open(`/users/${username}`, '_self');
+        setFavouriteMovieList(favouriteMoviesList.filter(movie => movie._id != id));
       })
       .catch(function (error) {
         console.log(error);

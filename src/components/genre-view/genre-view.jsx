@@ -22,6 +22,7 @@ export class GenreView extends React.Component {
                 <Card.Text>Description: {genre.Description}</Card.Text>
 
               </Card.Body>
+              <Button variant='dark' onClick={() => { onBackClick() }}>Back</Button>
             </Card>
           </Col>
         </Row>

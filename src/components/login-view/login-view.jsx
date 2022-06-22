@@ -11,6 +11,8 @@ import './login-view.scss';
 
 
 export function LoginView(props) {
+  // const [username, setUsername] = props.Username;
+  // const [password, setPassword] = props.password;
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // call useState() with empty string b/c this is the initial value of your login variable

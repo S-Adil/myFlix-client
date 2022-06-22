@@ -1,10 +1,6 @@
 {
   "name": "myflix-client",
   "version": "1.0.0",
-<<<<<<< Updated upstream
-  "description": "",
-  "main": "index.js",
-=======
   "description": "The objective of this app is to build the client-side for an application called myFlix based on the existing server-side code (REST API and database).",
   "dependencies": {
     "axios": "^0.27.2",
@@ -25,7 +21,6 @@
     "redux-devtools-extension": "^2.13.9",
     "url": "^0.11.0"
   },
->>>>>>> Stashed changes
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

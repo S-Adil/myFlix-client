@@ -26,7 +26,7 @@ import { LoginView } from '../login-view/login-view';
 import { MovieView } from '../movie-view/movie-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { DirectorView } from '../director-view/director-view';
-import { GenreView } from '../genre-view/genre-view';
+// import { GenreView } from '../genre-view/genre-view';
 import { ProfileView } from '../profile-view/profile-view';
 import { UserUpdate } from '../profile-view/user-update';
 import { NavigationBar } from '../navbar/navbar';

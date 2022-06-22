@@ -32085,7 +32085,7 @@ LoginView.PropTypes = {
 };
 const mapStateToProps = (state)=>{
     return {
-        user: state.user
+        username: state.user
     };
 };
 exports.default = _reactRedux.connect(mapStateToProps, {
@@ -46687,7 +46687,7 @@ ProfileView.PropTypes = {
 };
 let mapStateToProps = (state)=>{
     return {
-        user: state.user
+        userData: state.user
     };
 };
 exports.default = _reactRedux.connect(mapStateToProps, {
@@ -47160,7 +47160,7 @@ UserUpdate.PropTypes = {
 };
 let mapStateToProps = (state)=>{
     return {
-        user: state.user
+        username: state.user
     };
 };
 exports.default = _reactRedux.connect(mapStateToProps, {

@@ -111,7 +111,7 @@ LoginView.PropTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    username: state.user
   };
 }
 

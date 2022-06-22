@@ -189,7 +189,7 @@ ProfileView.PropTypes = {
 
 let mapStateToProps = state => {
   return {
-    user: state.user
+    userData: state.user
   };
 }
 

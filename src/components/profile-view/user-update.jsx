@@ -165,7 +165,7 @@ UserUpdate.PropTypes = {
 
 let mapStateToProps = state => {
   return {
-    user: state.user
+    username: state.user
   };
 }
 

@@ -1,8 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 
-import { connect } from 'react-redux';
-import { setUser } from '../../actions/actions';
 
 
 export function NavigationBar({ user }) {
@@ -48,11 +46,3 @@ export function NavigationBar({ user }) {
     </Navbar>
   );
 }
-
-let mapStateToProps = state => {
-  return {
-    user: state.user
-  };
-}
-
-export default connect(mapStateToProps, { setUser })(NavigationBar);

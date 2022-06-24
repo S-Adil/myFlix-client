@@ -4,9 +4,6 @@ import { Container, Row, Col, Form, Button, Card, CardGroup } from 'react-bootst
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-import { connect } from 'react-redux';
-import { setUser } from '../../actions/actions';
-
 //importing UI design styling for component
 import './profile-view.scss';
 
@@ -163,10 +160,3 @@ UserUpdate.PropTypes = {
 
 };
 
-let mapStateToProps = state => {
-  return {
-    username: state.user
-  };
-}
-
-export default connect(mapStateToProps, { setUser })(UserUpdate);

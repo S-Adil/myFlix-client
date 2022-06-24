@@ -58,9 +58,7 @@ class MainView extends React.Component {
 
 
   getMovies(token) {
-    axios.get('https://sana-movie-app.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+    axios.get('https://sana-movie-app.herokuapp.com/movies')
       .then(response => {
 
         // #4
@@ -77,8 +75,9 @@ class MainView extends React.Component {
     // code executed right after the component is added to the DOM.
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
-      const { setUser } = this.props;
+
       this.getMovies(accessToken);
+      this.props.setUser(localStorage.getItem('user'));
     }
   }
 
@@ -92,21 +91,17 @@ class MainView extends React.Component {
 
 
   onLoggedIn(authData) {
-    console.log(authData);
-    const { setUser } = this.props;
-    setUser(authData.user.Username);
-
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
+    const { setUser } = this.props;
+    setUser(authData.user.Username);
     this.getMovies(authData.token);
   }
 
   onLoggedOut() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.setState({
-      user: null
-    });
+    this.props.setUser('');
   }
 
   render() {

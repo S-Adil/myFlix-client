@@ -6,8 +6,6 @@ import axios from 'axios';
 import { MovieCard } from '../movie-card/movie-card';
 import { UserUpdate } from './user-update';
 
-import { connect } from 'react-redux';
-import { setUser } from '../../actions/actions';
 
 //importing UI design styling for component
 import './profile-view.scss';
@@ -187,10 +185,4 @@ ProfileView.PropTypes = {
   password: PropTypes.string.isRequired,
 }
 
-let mapStateToProps = state => {
-  return {
-    userData: state.user
-  };
-}
 
-export default connect(mapStateToProps, { setUser })(ProfileView);

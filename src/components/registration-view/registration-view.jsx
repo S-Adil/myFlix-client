@@ -4,8 +4,6 @@ import { Container, Row, Col, Form, Button, Card, CardGroup } from 'react-bootst
 import { Link } from "react-router-dom";
 import axios from 'axios';
 
-import { connect } from 'react-redux';
-import { setUser } from '../../actions/actions';
 
 //importing UI design styling for component
 import './registration-view.scss';
@@ -157,11 +155,3 @@ RegistrationView.PropTypes = {
   birthday: PropTypes.string.isRequired
 
 };
-
-let mapStateToProps = state => {
-  return {
-    user: state.user
-  };
-}
-
-export default connect(mapStateToProps, { setUser })(RegistrationView);

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import axios from 'axios';
 
-import { connect } from 'react-redux';
-import { setUser } from '../../actions/actions';
+
 
 //importing UI design styling for component
 import './login-view.scss';
@@ -108,11 +107,3 @@ LoginView.PropTypes = {
   username: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired
 }
-
-const mapStateToProps = (state) => {
-  return {
-    username: state.user
-  };
-}
-
-export default connect(mapStateToProps, { setUser })(LoginView);
